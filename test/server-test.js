@@ -68,6 +68,57 @@ describe('Server', () => {
       });
     });
 
+    it('should redirect the user to their new poll', (done) => {
+      var payload = { poll: fixtures.validPoll };
+
+      this.request.post('/polls', { form: payload }, (error, response) => {
+        if (error) { done(error); }
+        var newPollId = Object.keys(app.locals.polls)[0];
+        assert.equal(response.headers.location, '/polls/' + newPollId);
+        done();
+      });
+    });
+
+  });
+
+  describe('GET /polls/:id', () => {
+
+    beforeEach(() => {
+      app.locals.polls.testPoll = fixtures.validPoll;
+    });
+
+    it('should not return 404', (done) => {
+      this.request.get('/polls/testPoll', (error, response) => {
+        if (error) { done(error); }
+        assert.notEqual(response.statusCode, 404);
+        done();
+      });
+    });
+
+    it('should return a page that has a the title of the poll', (done) => {
+      var poll = app.locals.polls.testPoll;
+
+      this.request.get('/polls/testPoll', (error, response) => {
+        if (error){ done(error); }
+        assert(response.body.includes(poll.title),
+                `"${response.body}" does not include "${poll.title}".`);
+        done();
+      });
+    });
+
+    it('should return a page that has the polls votes', (done) => {
+      var poll = app.locals.polls.testPoll;
+
+      this.request.get('/polls/testPoll', (error, response) => {
+        if (error){ done(error); }
+        assert(response.body.includes(poll.votes[0]),
+                `"${response.body}" does not include "${poll.votes.first}".`);
+        assert(response.body.includes(poll.votes[1]),
+                `"${response.body}" does not include "${poll.votes.last}".`);
+        done();
+      });
+    });
+
   });
 
 });

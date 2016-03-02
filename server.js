@@ -22,11 +22,19 @@ app.get('/', (request, response) => {
 });
 
 app.post('/polls', (request, response) => {
+  if (!request.body.poll) { return response.sendStatus(400); }
+
   var id = generateId();
 
-  app.locals.polls[id] = request.body;
+  app.locals.polls[id] = request.body.poll;
 
-  response.sendStatus(201);
+  response.redirect('/polls/' + id);
+});
+
+app.get('/polls/:id', (request, response) => {
+  var poll = app.locals.polls[request.params.id];
+
+  response.render('poll', { poll: poll});
 });
 
 if (!module.parent) {
