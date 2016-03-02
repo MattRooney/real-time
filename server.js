@@ -1,13 +1,38 @@
 const express = require('express');
 const app = express();
 
+const path = require('path');
+const bodyParser = require('body-parser');
+
+const generateId = require('./lib/generate-id');
+
+
+app.use(express.static('static'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.set('view engine', 'jade');
+
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Real Time';
+app.locals.polls = {};
 
 app.get('/', (request, response) => {
-  response.send('Hello World!');
+  response.render('index');
 });
 
-app.listen(app.get('port'), () => {
-  console.log(`${app.locals.title} is running on ${app.get('port')}.`);
+app.post('/polls', (request, response) => {
+  var id = generateId();
+
+  app.locals.polls[id] = request.body;
+
+  response.sendStatus(201);
 });
+
+if (!module.parent) {
+  app.listen(app.get('port'), () => {
+    console.log(`${app.locals.title} is running on ${app.get('port')}.`);
+  });
+}
+
+module.exports = app;
