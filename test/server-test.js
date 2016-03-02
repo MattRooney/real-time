@@ -68,6 +68,17 @@ describe('Server', () => {
       });
     });
 
+    it('should redirect the user to their new poll', (done) => {
+      var payload = { poll: fixtures.validPoll };
+
+      this.request.post('/polls', { form: payload }, (error, response) => {
+        if (error) { done(error); }
+        var newPollId = Object.keys(app.locals.polls)[0];
+        assert.equal(response.headers.location, '/polls/' + newPollId);
+        done();
+      });
+    });
+
   });
 
   describe('GET /polls/:id', () => {
