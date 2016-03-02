@@ -29,6 +29,12 @@ app.post('/polls', (request, response) => {
   response.sendStatus(201);
 });
 
+app.get('/polls/:id', (request, response) => {
+  var poll = app.locals.polls[request.params.id];
+
+  response.render('poll', { poll: poll});
+});
+
 if (!module.parent) {
   app.listen(app.get('port'), () => {
     console.log(`${app.locals.title} is running on ${app.get('port')}.`);

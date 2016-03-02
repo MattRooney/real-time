@@ -1,0 +1,10 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+  body
+    h1= title
+    h1= poll.title
+    ul
+      each val in poll.votes
+        li= val
