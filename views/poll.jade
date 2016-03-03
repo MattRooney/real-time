@@ -3,8 +3,18 @@ html(lang="en")
   head
     title= title
   body
-    h1= title
-    h1= poll.title
-    ul
-      each val in poll.votes
-        li= val
+    include ./includes/navbar.jade
+    div.container.center
+      h1= poll.title
+      h4 Share this poll with friends:
+      br
+      h4 And Vote Below
+      div.choices
+        each vote in poll.responses
+          li.btn= vote
+          br
+          br
+
+script(src="//code.jquery.com/jquery-1.12.0.min.js")
+link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css', rel='stylesheet')
+script(src="/createPoll.js")
