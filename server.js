@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 
 const generateId = require('./lib/generate-id');
 
-
 app.use(express.static('static'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
