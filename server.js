@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'jade');
 
 app.set('port', process.env.PORT || 3000);
-app.locals.title = 'Real Time';
+app.locals.title = 'CrwdSrc';
 app.locals.polls = {};
 
 app.get('/', (request, response) => {

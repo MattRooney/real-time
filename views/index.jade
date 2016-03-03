@@ -1,6 +1,19 @@
 doctype html
 html(lang="en")
-  head
-    title= title
-  body
+head
+  title= title
+  link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css', rel='stylesheet')
+body
+  div.container.center
     h1= title
+    h4= 'Create a new poll below:'
+    input(type='text'
+          id='poll-title'
+          placeholder='title'
+          )
+    input(type='text'
+          class='poll-responses'
+          placeholder='responses')
+
+    button.btn Create Poll
+    link(src='https://code.jquery.com/jquery-2.1.1.min.js' type='text/javascript')

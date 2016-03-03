@@ -27,6 +27,8 @@
     "jade": "^1.11.0"
   },
   "devDependencies": {
+    "ejs": "^2.4.1",
+    "jade-bootstrap": "^1.0.2",
     "mocha": "^2.4.5",
     "request": "^2.69.0"
   }
