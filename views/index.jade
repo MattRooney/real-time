@@ -2,7 +2,6 @@ doctype html
 html(lang="en")
 head
   title= title
-  link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css', rel='stylesheet')
 body
   include ./includes/navbar.jade
   div.container.center
@@ -16,5 +15,7 @@ body
           class='poll-responses'
           placeholder='responses')
 
-    button.btn Create Poll
-    link(src='https://code.jquery.com/jquery-2.1.1.min.js' type='text/javascript')
+    button#create-poll.btn Create Poll
+    script(src="//code.jquery.com/jquery-1.12.0.min.js")
+    link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css', rel='stylesheet')
+    link(src='static/javascripts/application.js')
