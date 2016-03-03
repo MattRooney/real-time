@@ -1,3 +1,4 @@
+const http = require('http');
 const express = require('express');
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'jade');
 
 app.set('port', process.env.PORT || 3000);
+
 app.locals.title = 'CrwdSrc';
 app.locals.polls = {};
 
@@ -20,9 +22,12 @@ app.get('/', (request, response) => {
   response.render('index');
 });
 
+app.get('/admin', (request, response) => {
+  response.render('admin');
+});
+
 app.post('/polls', (request, response) => {
   if (!request.body.poll) { return response.sendStatus(400); }
-
   var id = generateId();
 
   app.locals.polls[id] = request.body.poll;
