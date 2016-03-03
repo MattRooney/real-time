@@ -24,9 +24,13 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "jquery": "^2.2.1"
   },
   "devDependencies": {
+    "ejs": "^2.4.1",
+    "jade-bootstrap": "^1.0.2",
+    "jquery": "^2.2.1",
     "mocha": "^2.4.5",
     "request": "^2.69.0"
   }

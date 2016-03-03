@@ -6,15 +6,14 @@ const bodyParser = require('body-parser');
 
 const generateId = require('./lib/generate-id');
 
-
-app.use(express.static('static'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'jade');
 
 app.set('port', process.env.PORT || 3000);
-app.locals.title = 'Real Time';
+app.locals.title = 'CrwdSrc';
 app.locals.polls = {};
 
 app.get('/', (request, response) => {
