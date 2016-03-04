@@ -5,6 +5,8 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 
+const Poll = require('./lib/poll')
+
 const generateId = require('./lib/generate-id');
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -28,9 +30,10 @@ app.get('/admin', (request, response) => {
 
 app.post('/polls', (request, response) => {
   if (!request.body.poll) { return response.sendStatus(400); }
-  var id = generateId();
+  var poll = new Poll(request.body.poll);
+  var id = poll.id;
 
-  app.locals.polls[id] = request.body.poll;
+  app.locals.polls[id] = poll
 
   response.redirect('/polls/' + id);
 });

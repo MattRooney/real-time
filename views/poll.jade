@@ -7,10 +7,11 @@ html(lang="en")
     div.container.center
       h1= poll.title
       h4 Share this poll with friends:
+      h5= poll.url
       br
       h4 And Vote Below
       div.choices
-        each vote in poll.responses
+        each vote in poll.votes
           li.btn= vote
           br
           br
