@@ -5,7 +5,9 @@ head
 body
   include ./includes/navbar.jade
   div.container.center
+    div#status-message
     h1= title
+    div#connection-count
     h4= 'Create a new poll below:'
     form(action="/polls" method="post" name= 'poll')
       input(type='text'
@@ -27,3 +29,5 @@ body
 
     script(src="//code.jquery.com/jquery-1.12.0.min.js")
     link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css', rel='stylesheet')
+    script(src="/socket.io/socket.io.js")
+    script(src="/client.js")

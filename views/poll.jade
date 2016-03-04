@@ -5,6 +5,8 @@ html(lang="en")
   body
     include ./includes/navbar.jade
     div.container.center
+      div#status-message
+      div#connection-count
       h1= poll.title
       h4 Share this poll with friends:
       h5= poll.url
@@ -18,4 +20,5 @@ html(lang="en")
 
 script(src="//code.jquery.com/jquery-1.12.0.min.js")
 link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css', rel='stylesheet')
-script(src="/createPoll.js")
+script(src="/socket.io/socket.io.js")
+script(src="/client.js")
