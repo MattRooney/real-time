@@ -28,6 +28,10 @@ if (!module.parent) {
 app.locals.title = 'CrwdSrc';
 app.locals.polls = {};
 
+var votes = {};
+var _ = require('lodash');
+
+
 app.get('/', (request, response) => {
   response.render('index');
 });
@@ -59,10 +63,31 @@ io.on('connection', function (socket) {
 
   socket.emit('statusMessage', 'You have connected.');
 
+  socket.on('message', function (channel, message) {
+    if (channel === 'voteCast') {
+        votes[socket.id] = message;
+        socket.emit('currentVote', message);
+        socket.emit('voteCount', countVotes(votes));
+      }
+  });
+
   socket.on('disconnect', function () {
     console.log('A user has disconnected.', io.engine.clientsCount);
   });
 });
+
+function countVotes(votes) {
+  var voteCount = {
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0
+  };
+  for (var vote in votes) {
+    voteCount[votes[vote]]++
+  }
+  return voteCount;
+}
 
 module.exports = app;
 module.exports = server;

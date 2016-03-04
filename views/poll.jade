@@ -12,11 +12,14 @@ html(lang="en")
       h5= poll.url
       br
       h4 And Vote Below
-      div.choices
+      div#choices
         each vote in poll.votes
           li.btn= vote
           br
           br
+      div#vote-count
+      div#your-vote
+      div.ct-chart.ct-perfect-fourth
 
 script(src="//code.jquery.com/jquery-1.12.0.min.js")
 link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css', rel='stylesheet')
