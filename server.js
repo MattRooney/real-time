@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 
 const Poll = require('./lib/poll')
 
-const generateId = require('./lib/generate-id');
-
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
