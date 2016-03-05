@@ -6,12 +6,14 @@ const server = http.createServer(app);
 const path = require('path');
 const bodyParser = require('body-parser');
 
-const Poll = require('./lib/poll')
+const Poll = require('./lib/poll');
 
 const port = process.env.PORT || 3000;
 
 const socketIo = require('socket.io');
-const io = socketIo(server)
+const io = socketIo(server);
+const $ = require('jQuery');
+const Highcharts = require('highcharts');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -30,7 +32,6 @@ app.locals.polls = {};
 
 var votes = {};
 var _ = require('lodash');
-
 
 app.get('/', (request, response) => {
   response.render('index');
@@ -77,12 +78,9 @@ io.on('connection', function (socket) {
 });
 
 function countVotes(votes) {
-  var voteCount = {
-    A: 0,
-    B: 0,
-    C: 0,
-    D: 0
-  };
+  _.countBy(votes, Math.floor);
+
+  _.reduce()
   for (var vote in votes) {
     voteCount[votes[vote]]++
   }

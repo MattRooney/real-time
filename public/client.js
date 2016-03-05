@@ -5,6 +5,7 @@ var statusMessage = document.getElementById('status-message');
 var buttons = document.querySelectorAll('#choices li');
 var currentPoll = document.getElementById('vote-count');
 var yourVote = document.getElementById('your-vote');
+var chart = document.getElementById('chart');
 
 
 for (var i = 0; i < buttons.length; i++) {
@@ -23,4 +24,8 @@ socket.on('statusMessage', function (message) {
 
 socket.on('currentVote' ,function(vote) {
   yourVote.innerText = 'You voted for ' + vote;
-})
+});
+
+socket.on('voteCount', function(votes) {
+  debugger;
+});
