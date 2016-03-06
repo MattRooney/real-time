@@ -13,23 +13,22 @@ html(lang="en")
       br
       h4 And Vote Below
       div#choices
-        each vote in poll.votes
-          li.btn= vote
+        each response in poll.responses
+          li.btn(id= poll.id)= response
           br
           br
       div#your-vote
-      div#vote-count
+      div
         table
           thead
             tr
               th(data-field="vote") Votes
               th(data-field="amount") Amount
-              th(data-field="percent") Percentage
-          tbody
-            each vote in poll.votes
+          tbody#vote-count
+            each count, vote in poll.votes
               tr
                 td= vote
-                td= vote.count
+                td= count
 
 script(src="//code.jquery.com/jquery-1.12.0.min.js")
 link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css', rel='stylesheet')

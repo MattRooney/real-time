@@ -13,7 +13,8 @@ const port = process.env.PORT || 3000;
 const socketIo = require('socket.io');
 const io = socketIo(server);
 const $ = require('jQuery');
-const Highcharts = require('highcharts');
+const _ = require('lodash');
+const locus = require('locus');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -29,9 +30,6 @@ if (!module.parent) {
 
 app.locals.title = 'CrwdSrc';
 app.locals.polls = {};
-
-var votes = {};
-var _ = require('lodash');
 
 app.get('/', (request, response) => {
   response.render('index');
@@ -66,9 +64,10 @@ io.on('connection', function (socket) {
 
   socket.on('message', function (channel, message) {
     if (channel === 'voteCast') {
-        votes[socket.id] = message;
-        socket.emit('currentVote', message);
-        socket.emit('voteCount', countVotes(votes));
+      var poll = app.locals.polls[message.poll]
+      poll.votes[message.vote.toLowerCase()] += 1
+      socket.emit('currentVote', message.vote);
+      socket.emit('voteCount', poll);
       }
   });
 
@@ -76,16 +75,6 @@ io.on('connection', function (socket) {
     console.log('A user has disconnected.', io.engine.clientsCount);
   });
 });
-
-function countVotes(votes) {
-  _.countBy(votes, Math.floor);
-
-  _.reduce()
-  for (var vote in votes) {
-    voteCount[votes[vote]]++
-  }
-  return voteCount;
-}
 
 module.exports = app;
 module.exports = server;
