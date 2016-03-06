@@ -26,12 +26,14 @@ socket.on('currentVote' ,function(vote) {
 });
 
 socket.on('voteCount', function(poll) {
-  var voteTable = poll.responses.forEach(function(response) {
-          '<tr>'
-          + '<td>' + response + '</td>'
-          + '<td>' + poll.votes[response] + '</td>'
-          + '</tr>'
-        + '</tbody>'
-        })
-  return currentPoll.innerHTML = voteTable + '</thead>'
+  var voteTable = ""
+  for(var i = 0; i < poll.responses.length; i++) {
+    var voteTable = voteTable.concat(
+    '<tr>'
+    + '<td>' + poll.responses[i] + '</td>'
+    + '<td>' + poll.votes[poll.responses[i]] + '</td>'
+    + '</tr>'
+    + '</tbody>'
+  )}
+  currentPoll.innerHTML = voteTable + '</thead>';
 });
