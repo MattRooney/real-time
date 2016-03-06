@@ -41,7 +41,11 @@ app.get('/admin', (request, response) => {
 
 app.post('/polls', (request, response) => {
   if (!request.body.poll) { return response.sendStatus(400); }
-  var poll = new Poll(request.body.poll);
+  var pollData = request.body.poll
+  var responses = pollData.responses.map(function(response) {
+    return response.trim()
+  });
+  var poll = new Poll(pollData, responses);
   var id = poll.id;
 
   app.locals.polls[id] = poll
@@ -75,7 +79,6 @@ io.on('connection', function (socket) {
     console.log('A user has disconnected.', io.engine.clientsCount);
   });
 });
-
 
 module.exports = app;
 module.exports = server;
