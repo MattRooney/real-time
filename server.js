@@ -41,7 +41,11 @@ app.get('/admin', (request, response) => {
 
 app.post('/polls', (request, response) => {
   if (!request.body.poll) { return response.sendStatus(400); }
-  var poll = new Poll(request.body.poll);
+  var pollData = request.body.poll
+  var responses = pollData.responses.map(function(response) {
+    return response.trim()
+  });
+  var poll = new Poll(pollData, responses);
   var id = poll.id;
 
   app.locals.polls[id] = poll
@@ -67,7 +71,7 @@ io.on('connection', function (socket) {
       var poll = app.locals.polls[message.poll]
       poll.votes[message.vote.toLowerCase()] += 1
       socket.emit('currentVote', message.vote);
-      socket.emit('voteCount', poll);
+      io.sockets.emit('voteCount', poll);
       }
   });
 
