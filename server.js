@@ -12,7 +12,6 @@ const port = process.env.PORT || 3000;
 
 const socketIo = require('socket.io');
 const io = socketIo(server);
-const $ = require('jQuery');
 const _ = require('lodash');
 const locus = require('locus');
 
