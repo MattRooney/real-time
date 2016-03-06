@@ -7,18 +7,24 @@ html(lang="en")
     div.container.center
       div#status-message
       div#connection-count
-      h1= poll.title
+      h3 Admin Dashboard
+      h1 Poll: #{poll.title}
+      div#admin-buttons
+        a(id= poll.id class= 'share btn') Share Results with Voters
+        &nbsp;
+        a(id= poll.id class= 'close-poll btn') Close Poll
+
       h4 Share this poll with friends:
       h5= poll.url
       br
       h4 And Vote Below
       div#choices
+
         each response in poll.responses
-          li.btn(id= poll.id)= response
+          a.btn(id= poll.id)= response
           &nbsp;
       div#your-vote
-
-      div(id= 'vote-table' style='display: none')
+      div
         table
           thead
             tr

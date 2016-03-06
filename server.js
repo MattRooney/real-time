@@ -45,16 +45,23 @@ app.post('/polls', (request, response) => {
   });
   var poll = new Poll(pollData, responses);
   var id = poll.id;
+  var adminId = poll.adminId
 
   app.locals.polls[id] = poll
 
-  response.redirect('/polls/' + id);
+  response.redirect('/polls/' + id + '/' + adminId);
 });
 
 app.get('/polls/:id', (request, response) => {
   var poll = app.locals.polls[request.params.id];
 
   response.render('poll', { poll: poll});
+});
+
+app.get('/polls/:id/:adminId', (request, response) => {
+  var poll = app.locals.polls[request.params.id];
+
+  response.render('admin', { poll: poll});
 });
 
 io.on('connection', function (socket) {
@@ -66,11 +73,15 @@ io.on('connection', function (socket) {
 
   socket.on('message', function (channel, message) {
     if (channel === 'voteCast') {
-      var poll = app.locals.polls[message.poll]
-      poll.votes[message.vote.toLowerCase()] += 1
+      var poll = app.locals.polls[message.poll];
+      poll.votes[message.vote.toLowerCase()] += 1;
       socket.emit('currentVote', message.vote);
       io.sockets.emit('voteCount', poll);
-      }
+    } else if (channel === 'togglePrivate') {
+      var poll = app.locals.polls[message.poll];
+      poll.private = !poll.private;
+      io.sockets.emit('privateStatus', poll);
+    }
   });
 
   socket.on('disconnect', function () {

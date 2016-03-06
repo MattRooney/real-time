@@ -8,13 +8,21 @@ var chart = document.getElementById('chart');
 
 $(document).ready(function() {
   addResponse();
+  togglePrivate();
 });
 
 function addResponse() {
-  $('#add-response').on("click", function() {
+  $('#add-response').on('click', function() {
     $('#poll-form').append(
       "<input type='text' class='poll-responses' name='poll[responses][]' placeholder='responses'/>"
     )
+  });
+}
+
+function togglePrivate() {
+  $('.share').on('click', function() {
+    socket.send('togglePrivate', { poll: this.id });
+    $('#share').text('Hide results from voters')
   });
 }
 
@@ -37,14 +45,22 @@ socket.on('currentVote' ,function(vote) {
 });
 
 socket.on('voteCount', function(poll) {
-  var voteTable = ""
-  for(var i = 0; i < poll.responses.length; i++) {
-    var voteTable = voteTable.concat(
-    '<tr>'
-    + '<td>' + poll.responses[i] + '</td>'
-    + '<td>' + poll.votes[poll.responses[i]] + '</td>'
-    + '</tr>'
-    + '</tbody>'
-  )}
-  currentPoll.innerHTML = voteTable + '</thead>';
+  if (poll.private === false) {
+    var voteTable = ""
+    for(var i = 0; i < poll.responses.length; i++) {
+      var voteTable = voteTable.concat(
+      '<tr>'
+      + '<td>' + poll.responses[i] + '</td>'
+      + '<td>' + poll.votes[poll.responses[i]] + '</td>'
+      + '</tr>'
+      + '</tbody>'
+    )}
+    currentPoll.innerHTML = voteTable + '</thead>';
+  }
+});
+
+socket.on('privateStatus', function(poll) {
+  if (poll.private === false) {
+    $('#vote-table').toggle(display);
+  }
 });
