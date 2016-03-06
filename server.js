@@ -13,7 +13,6 @@ const port = process.env.PORT || 3000;
 const socketIo = require('socket.io');
 const io = socketIo(server);
 const _ = require('lodash');
-const locus = require('locus');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
