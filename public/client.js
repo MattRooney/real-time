@@ -6,6 +6,17 @@ var currentPoll = document.getElementById('vote-count');
 var yourVote = document.getElementById('your-vote');
 var chart = document.getElementById('chart');
 
+$(document).ready(function() {
+  addResponse();
+});
+
+function addResponse() {
+  $('#add-response').on("click", function() {
+    $('#poll-form').append(
+      "<input type='text' class='poll-responses' name='poll[responses][]' placeholder='responses'/>"
+    )
+  });
+}
 
 for (var i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener('click', function () {

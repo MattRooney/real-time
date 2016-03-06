@@ -67,7 +67,7 @@ io.on('connection', function (socket) {
       var poll = app.locals.polls[message.poll]
       poll.votes[message.vote.toLowerCase()] += 1
       socket.emit('currentVote', message.vote);
-      socket.emit('voteCount', poll);
+      io.sockets.emit('voteCount', poll);
       }
   });
 
@@ -75,6 +75,7 @@ io.on('connection', function (socket) {
     console.log('A user has disconnected.', io.engine.clientsCount);
   });
 });
+
 
 module.exports = app;
 module.exports = server;
