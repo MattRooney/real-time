@@ -49,6 +49,7 @@ socket.on('statusMessage', function (message) {
 
 socket.on('currentVote' ,function(vote) {
   yourVote.innerText = 'You voted for ' + vote;
+  $('#choices').remove()
 });
 
 socket.on('voteCount', function(poll) {
