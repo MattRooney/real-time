@@ -77,11 +77,14 @@ io.on('connection', function (socket) {
       socket.emit('currentVote', message.vote);
       io.sockets.emit('voteCount', poll);
     } else if (channel === 'closePoll') {
-      poll.open = false;
-      io.sockets.emit('pollClosed', poll);
+        poll.open = false;
+        io.sockets.emit('pollClosed', poll);
     } else if (channel === 'voteCast' && poll.hasExpired()) {
-      poll.open = false;
-      io.sockets.emit('pollClosed', poll);
+        poll.open = false;
+        io.sockets.emit('pollClosed', poll);
+    } else if (channel === 'togglePrivate') {
+        poll.private = !poll.private;
+        io.sockets.emit('privateStatus', poll);
     }
   });
 
