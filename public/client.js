@@ -70,7 +70,10 @@ socket.on('pollClosed', function(poll) {
 });
 
 socket.on('privateStatus', function(poll) {
-  if (poll.private === false) {
-    $('#vote-table').toggle(display);
+  $('.voter-vote-table').toggle();
+  if (poll.private) {
+    $('.share').html('Share Results with Voters')
+  } else if (!poll.private) {
+    $('.share').html('Hide Results from Voters')
   }
 });
