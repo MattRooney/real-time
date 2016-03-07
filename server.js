@@ -10,6 +10,8 @@ const socketIo = require('socket.io');
 const io = socketIo(server);
 const _ = require('lodash');
 
+const locus = require('locus');
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,15 +38,15 @@ app.get('/admin', (request, response) => {
 
 app.post('/polls', (request, response) => {
   if (!request.body.poll) { return response.sendStatus(400); }
-  var pollData = request.body.poll
+  var pollData = request.body.poll;
   var responses = pollData.responses.map(function(response) {
     return response.trim().toLowerCase();
   });
   var poll = new Poll(pollData, responses);
   var id = poll.id;
-  var adminId = poll.adminId
+  var adminId = poll.adminId;
 
-  app.locals.polls[id] = poll
+  app.locals.polls[id] = poll;
 
   response.redirect('/polls/' + id + '/' + adminId);
 });

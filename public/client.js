@@ -16,20 +16,20 @@ function addResponse() {
   $('#add-response').on('click', function() {
     $('#poll-form').append(
       "<input type='text' class='poll-responses' name='poll[responses][]' placeholder='responses'/>"
-    )
+    );
   });
 }
 
 function togglePrivate() {
   $('.share').on('click', function() {
     socket.send('togglePrivate', { poll: this.id });
-    $('#share').text('Hide results from voters')
+    $('#share').text('Hide results from voters');
   });
 }
 
 function closePoll() {
   $('.close-poll').on('click', function () {
-    socket.send('closePoll', { poll: this.id })
+    socket.send('closePoll', { poll: this.id });
   })
 }
 
@@ -49,7 +49,7 @@ socket.on('statusMessage', function (message) {
 
 socket.on('currentVote' ,function(vote) {
   yourVote.innerText = 'You voted for ' + vote;
-  $('#choices').remove()
+  $('#choices').remove();
 });
 
 socket.on('voteCount', function(poll) {
@@ -61,20 +61,20 @@ socket.on('voteCount', function(poll) {
     + '<td>' + poll.votes[poll.responses[i]] + '</td>'
     + '</tr>'
     + '</tbody>'
-  )}
+  )};
   currentPoll.innerHTML = voteTable + '</thead>';
 });
 
 socket.on('pollClosed', function(poll) {
   $('.btn').remove();
-  $('#choices').append('<h3>This poll has closed.</h3>')
+  $('#choices').append('<h3>This poll has closed.</h3>');
 });
 
 socket.on('privateStatus', function(poll) {
   $('.voter-vote-table').toggle();
   if (poll.private) {
-    $('.share').html('Share Results with Voters')
+    $('.share').html('Share Results with Voters');
   } else if (!poll.private) {
-    $('.share').html('Hide Results from Voters')
+    $('.share').html('Hide Results from Voters');
   }
 });
