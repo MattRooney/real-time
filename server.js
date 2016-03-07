@@ -41,7 +41,6 @@ app.post('/polls', (request, response) => {
   var responses = pollData.responses.map(function(response) {
     return response.trim()
   });
-  eval(locus);
   var poll = new Poll(pollData, responses);
   var id = poll.id;
   var adminId = poll.adminId
@@ -71,19 +70,19 @@ io.on('connection', function (socket) {
   socket.emit('statusMessage', 'You have connected.');
 
   socket.on('message', function (channel, message) {
-    if (channel === 'voteCast') {
-      var poll = app.locals.polls[message.poll];
+    var poll = app.locals.polls[message.poll];
+    if (channel === 'voteCast' && !poll.hasExpired) {
       poll.votes[message.vote.toLowerCase()] += 1;
       socket.emit('currentVote', message.vote);
       io.sockets.emit('voteCount', poll);
     } else if (channel === 'closePoll') {
-      var poll = app.locals.polls[message.poll];
+      poll.open = false;
+      io.sockets.emit('pollClosed', poll);
+    } else if (channel === 'voteCast' && poll.hasExpired) {
       poll.open = false;
       io.sockets.emit('pollClosed', poll);
     }
   });
-
-  if Time.now
 
   socket.on('disconnect', function () {
     console.log('A user has disconnected.', io.engine.clientsCount);

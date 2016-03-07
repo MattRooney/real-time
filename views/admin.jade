@@ -9,11 +9,11 @@ html(lang="en")
       div#connection-count
       h3 Admin Dashboard
       h1 Poll: #{poll.title}
+      br
       div#admin-buttons
         a(id= poll.id class= 'share btn') Share Results with Voters
         &nbsp;
         a(id= poll.id class= 'close-poll btn') Close Poll
-
       h4 Share this poll with friends:
       h5= poll.url
       br
@@ -21,13 +21,13 @@ html(lang="en")
         if poll.open
           h4 And Vote Below
           each response in poll.responses
-            a.btn(id= poll.id)= response
+            li.btn(id= poll.id)= response
             &nbsp;
         else
           h3 This poll has closed.
 
       div#your-vote
-      div
+      div(id= 'vote-table')
         table
           thead
             tr

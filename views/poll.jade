@@ -8,6 +8,7 @@ html(lang="en")
       div#status-message
       div#connection-count
       h1= poll.title
+      p This poll closes at #{poll.timeoutTime} on #{poll.timeoutDate}.
       br
       div#choices
         if poll.open
@@ -17,6 +18,7 @@ html(lang="en")
             &nbsp;
         else
           h3 This poll has closed.
+
       div#your-vote
 
       if poll.private
