@@ -77,12 +77,14 @@ io.on('connection', function (socket) {
       poll.votes[message.vote.toLowerCase()] += 1;
       socket.emit('currentVote', message.vote);
       io.sockets.emit('voteCount', poll);
-    } else if (channel === 'togglePrivate') {
+    } else if (channel === 'closePoll') {
       var poll = app.locals.polls[message.poll];
-      poll.private = !poll.private;
-      io.sockets.emit('privateStatus', poll);
+      poll.open = false;
+      io.sockets.emit('pollClosed', poll);
     }
   });
+
+  socket.on
 
   socket.on('disconnect', function () {
     console.log('A user has disconnected.', io.engine.clientsCount);

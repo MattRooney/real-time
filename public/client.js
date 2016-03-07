@@ -9,6 +9,7 @@ var chart = document.getElementById('chart');
 $(document).ready(function() {
   addResponse();
   togglePrivate();
+  closePoll();
 });
 
 function addResponse() {
@@ -24,6 +25,12 @@ function togglePrivate() {
     socket.send('togglePrivate', { poll: this.id });
     $('#share').text('Hide results from voters')
   });
+}
+
+function closePoll() {
+  $('.close-poll').on('click', function () {
+    socket.send('closePoll', { poll: this.id })
+  })
 }
 
 for (var i = 0; i < buttons.length; i++) {
@@ -57,6 +64,11 @@ socket.on('voteCount', function(poll) {
     )}
     currentPoll.innerHTML = voteTable + '</thead>';
   }
+});
+
+socket.on('pollClosed', function(poll) {
+  $('.btn').remove();
+  $('#choices').append('<h3>This poll has closed</h3>')
 });
 
 socket.on('privateStatus', function(poll) {
