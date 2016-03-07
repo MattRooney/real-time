@@ -2,22 +2,19 @@ const http = require('http');
 const express = require('express');
 const app = express();
 const server = http.createServer(app);
-
 const path = require('path');
 const bodyParser = require('body-parser');
-
 const Poll = require('./lib/poll');
-
 const port = process.env.PORT || 3000;
-
 const socketIo = require('socket.io');
 const io = socketIo(server);
 const _ = require('lodash');
 
+const locus = require('locus');
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.set('view engine', 'jade');
 
 if (!module.parent) {
@@ -25,6 +22,8 @@ if (!module.parent) {
    console.log('CrwdSrc is listening on port ' + port + '.');
   });
 }
+
+/////////////////// ROUTES ////////////////////
 
 app.locals.title = 'CrwdSrc';
 app.locals.polls = {};
@@ -41,14 +40,15 @@ app.post('/polls', (request, response) => {
   if (!request.body.poll) { return response.sendStatus(400); }
   var pollData = request.body.poll
   var responses = pollData.responses.map(function(response) {
-    return response.trim()
+    return response.trim().toLowerCase();
   });
   var poll = new Poll(pollData, responses);
   var id = poll.id;
+  var adminId = poll.adminId
 
   app.locals.polls[id] = poll
 
-  response.redirect('/polls/' + id);
+  response.redirect('/polls/' + id + '/' + adminId);
 });
 
 app.get('/polls/:id', (request, response) => {
@@ -56,6 +56,14 @@ app.get('/polls/:id', (request, response) => {
 
   response.render('poll', { poll: poll});
 });
+
+app.get('/polls/:id/:adminId', (request, response) => {
+  var poll = app.locals.polls[request.params.id];
+
+  response.render('admin', { poll: poll});
+});
+
+///////////////// SOCKETS //////////////////////
 
 io.on('connection', function (socket) {
   console.log('A user has connected.', io.engine.clientsCount);
@@ -65,12 +73,18 @@ io.on('connection', function (socket) {
   socket.emit('statusMessage', 'You have connected.');
 
   socket.on('message', function (channel, message) {
-    if (channel === 'voteCast') {
-      var poll = app.locals.polls[message.poll]
-      poll.votes[message.vote.toLowerCase()] += 1
+    var poll = app.locals.polls[message.poll];
+    if (channel === 'voteCast' && !poll.hasExpired()) {
+      poll.votes[message.vote.toLowerCase()] += 1;
       socket.emit('currentVote', message.vote);
       io.sockets.emit('voteCount', poll);
-      }
+    } else if (channel === 'closePoll') {
+      poll.open = false;
+      io.sockets.emit('pollClosed', poll);
+    } else if (channel === 'voteCast' && poll.hasExpired()) {
+      poll.open = false;
+      io.sockets.emit('pollClosed', poll);
+    }
   });
 
   socket.on('disconnect', function () {

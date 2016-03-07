@@ -13,7 +13,7 @@ body
       input(type='text'
             id='poll-title'
             name='poll[title]'
-            placeholder='title'
+            placeholder='Poll question'
             )
       input(type='text'
             class='poll-responses'
@@ -30,6 +30,13 @@ body
 
       br
       br
+
+      div#timeout
+        h5 When would you like your poll to close?
+          .input-field Date
+            input.datepicker.center(name= 'poll[timeout-date]' type='date' class='timeout-date')
+          .input-field Time
+            input.datepicker.center(name= 'poll[timeout-time]' type='time' class='timeout-time')
 
       button(id= 'create-poll'
              class= 'btn') Create Poll

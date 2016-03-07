@@ -8,14 +8,30 @@ var chart = document.getElementById('chart');
 
 $(document).ready(function() {
   addResponse();
+  togglePrivate();
+  closePoll();
 });
 
 function addResponse() {
-  $('#add-response').on("click", function() {
+  $('#add-response').on('click', function() {
     $('#poll-form').append(
       "<input type='text' class='poll-responses' name='poll[responses][]' placeholder='responses'/>"
     )
   });
+}
+
+function togglePrivate() {
+  $('.share').on('click', function() {
+    socket.send('togglePrivate', { poll: this.id });
+    $('#share').text('Hide results from voters')
+  });
+}
+
+function closePoll() {
+  $('.close-poll').on('click', function () {
+    debugger;
+    socket.send('closePoll', { poll: this.id })
+  })
 }
 
 for (var i = 0; i < buttons.length; i++) {
@@ -47,4 +63,15 @@ socket.on('voteCount', function(poll) {
     + '</tbody>'
   )}
   currentPoll.innerHTML = voteTable + '</thead>';
+});
+
+socket.on('pollClosed', function(poll) {
+  $('.btn').remove();
+  $('#choices').append('<h3>This poll has closed.</h3>')
+});
+
+socket.on('privateStatus', function(poll) {
+  if (poll.private === false) {
+    $('#vote-table').toggle(display);
+  }
 });
