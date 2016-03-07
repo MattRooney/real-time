@@ -17,12 +17,15 @@ html(lang="en")
       h4 Share this poll with friends:
       h5= poll.url
       br
-      h4 And Vote Below
       div#choices
+        if poll.open
+          h4 And Vote Below
+          each response in poll.responses
+            a.btn(id= poll.id)= response
+            &nbsp;
+        else
+          h3 This poll has closed.
 
-        each response in poll.responses
-          a.btn(id= poll.id)= response
-          &nbsp;
       div#your-vote
       div
         table

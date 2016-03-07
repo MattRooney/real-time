@@ -68,7 +68,7 @@ socket.on('voteCount', function(poll) {
 
 socket.on('pollClosed', function(poll) {
   $('.btn').remove();
-  $('#choices').append('<h3>This poll has closed</h3>')
+  $('#choices').append('<h3>This poll has closed.</h3>')
 });
 
 socket.on('privateStatus', function(poll) {

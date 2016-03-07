@@ -8,27 +8,31 @@ html(lang="en")
       div#status-message
       div#connection-count
       h1= poll.title
-      h4 Share this poll with friends:
-      h5= poll.url
       br
-      h4 And Vote Below
       div#choices
-        each response in poll.responses
-          li.btn(id= poll.id)= response
-          &nbsp;
+        if poll.open
+          h4 And Vote Below
+          each response in poll.responses
+            li.btn(id= poll.id)= response
+            &nbsp;
+        else
+          h3 This poll has closed.
       div#your-vote
 
-      div(id= 'vote-table' style='display: none')
-        table
-          thead
-            tr
-              th(data-field="vote") Votes
-              th(data-field="amount") Amount
-          tbody#vote-count
-            each count, vote in poll.votes
+      if poll.private
+        p
+      else
+        div(id= 'vote-table' style='display: none')
+          table
+            thead
               tr
-                td= vote
-                td= count
+                th(data-field="vote") Votes
+                th(data-field="amount") Amount
+            tbody#vote-count
+              each count, vote in poll.votes
+                tr
+                  td= vote
+                  td= count
 
 script(src="//code.jquery.com/jquery-1.12.0.min.js")
 link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css', rel='stylesheet')
