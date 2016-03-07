@@ -71,14 +71,14 @@ io.on('connection', function (socket) {
 
   socket.on('message', function (channel, message) {
     var poll = app.locals.polls[message.poll];
-    if (channel === 'voteCast' && !poll.hasExpired) {
+    if (channel === 'voteCast' && !poll.hasExpired()) {
       poll.votes[message.vote.toLowerCase()] += 1;
       socket.emit('currentVote', message.vote);
       io.sockets.emit('voteCount', poll);
     } else if (channel === 'closePoll') {
       poll.open = false;
       io.sockets.emit('pollClosed', poll);
-    } else if (channel === 'voteCast' && poll.hasExpired) {
+    } else if (channel === 'voteCast' && poll.hasExpired()) {
       poll.open = false;
       io.sockets.emit('pollClosed', poll);
     }
