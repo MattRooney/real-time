@@ -10,6 +10,9 @@ const socketIo = require('socket.io');
 const io = socketIo(server);
 const _ = require('lodash');
 
+app.locals.title = 'CrwdSrc';
+app.locals.polls = {};
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,9 +25,6 @@ if (!module.parent) {
 }
 
 /////////////////// ROUTES ////////////////////
-
-app.locals.title = 'CrwdSrc';
-app.locals.polls = {};
 
 app.get('/', (request, response) => {
   response.render('index');
@@ -93,5 +93,5 @@ io.on('connection', function (socket) {
   });
 });
 
-module.exports = app;
 module.exports = server;
+module.exports = app;
