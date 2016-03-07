@@ -29,7 +29,6 @@ function togglePrivate() {
 
 function closePoll() {
   $('.close-poll').on('click', function () {
-    debugger;
     socket.send('closePoll', { poll: this.id })
   })
 }
