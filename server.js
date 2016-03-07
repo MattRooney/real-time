@@ -15,7 +15,6 @@ const locus = require('locus');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.set('view engine', 'jade');
 
 if (!module.parent) {
@@ -23,6 +22,8 @@ if (!module.parent) {
    console.log('CrwdSrc is listening on port ' + port + '.');
   });
 }
+
+/////////////////// ROUTES ////////////////////
 
 app.locals.title = 'CrwdSrc';
 app.locals.polls = {};
@@ -39,7 +40,7 @@ app.post('/polls', (request, response) => {
   if (!request.body.poll) { return response.sendStatus(400); }
   var pollData = request.body.poll
   var responses = pollData.responses.map(function(response) {
-    return response.trim()
+    return response.trim().toLowerCase();
   });
   var poll = new Poll(pollData, responses);
   var id = poll.id;
@@ -61,6 +62,8 @@ app.get('/polls/:id/:adminId', (request, response) => {
 
   response.render('admin', { poll: poll});
 });
+
+///////////////// SOCKETS //////////////////////
 
 io.on('connection', function (socket) {
   console.log('A user has connected.', io.engine.clientsCount);

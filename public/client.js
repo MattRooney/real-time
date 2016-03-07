@@ -29,6 +29,7 @@ function togglePrivate() {
 
 function closePoll() {
   $('.close-poll').on('click', function () {
+    debugger;
     socket.send('closePoll', { poll: this.id })
   })
 }
@@ -52,18 +53,16 @@ socket.on('currentVote' ,function(vote) {
 });
 
 socket.on('voteCount', function(poll) {
-  if (poll.private === false) {
-    var voteTable = ""
-    for(var i = 0; i < poll.responses.length; i++) {
-      var voteTable = voteTable.concat(
-      '<tr>'
-      + '<td>' + poll.responses[i] + '</td>'
-      + '<td>' + poll.votes[poll.responses[i]] + '</td>'
-      + '</tr>'
-      + '</tbody>'
-    )}
-    currentPoll.innerHTML = voteTable + '</thead>';
-  }
+  var voteTable = ""
+  for(var i = 0; i < poll.responses.length; i++) {
+    var voteTable = voteTable.concat(
+    '<tr>'
+    + '<td>' + poll.responses[i] + '</td>'
+    + '<td>' + poll.votes[poll.responses[i]] + '</td>'
+    + '</tr>'
+    + '</tbody>'
+  )}
+  currentPoll.innerHTML = voteTable + '</thead>';
 });
 
 socket.on('pollClosed', function(poll) {

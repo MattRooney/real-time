@@ -15,12 +15,10 @@ html(lang="en")
           h4 And Vote Below
           each response in poll.responses
             li.btn(id= poll.id)= response
-            &nbsp;
+            | &nbsp;
         else
           h3 This poll has closed.
-
       div#your-vote
-
       if poll.private
         p
       else
