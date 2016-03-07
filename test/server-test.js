@@ -2,10 +2,11 @@ const assert = require('assert');
 const app = require('../server');
 const request = require('request');
 const fixtures = require('./fixtures');
+const Poll = require('../lib/poll');
 
 describe('Server', () => {
 
-  before(done => {
+  before((done) => {
     this.port = 9876;
     this.server = app.listen(this.port, (err, result) => {
       if (err) { return done(err); }
@@ -36,7 +37,7 @@ describe('Server', () => {
     });
 
     it('should have a body with the name of the application', (done) => {
-      var title = app.locals.title;
+      var title = 'CrwdSrc';
 
       this.request.get('/', (error, response) => {
         if (error) { done(error); }
@@ -68,13 +69,15 @@ describe('Server', () => {
       });
     });
 
-    it('should redirect the user to their new poll', (done) => {
+    it('should redirect the user to their new poll admin page', (done) => {
       var payload = { poll: fixtures.validPoll };
 
       this.request.post('/polls', { form: payload }, (error, response) => {
         if (error) { done(error); }
         var newPollId = Object.keys(app.locals.polls)[0];
-        assert.equal(response.headers.location, '/polls/' + newPollId);
+        var newAdminId = app.locals.polls[newPollId]['adminId'];
+
+        assert.equal(response.headers.location, '/polls/' + newPollId + '/' + newAdminId);
         done();
       });
     });
@@ -111,9 +114,9 @@ describe('Server', () => {
 
       this.request.get('/polls/testPoll', (error, response) => {
         if (error){ done(error); }
-        assert(response.body.includes(poll.votes[0]),
+        assert(response.body.includes(poll.votes['yes']),
                 `"${response.body}" does not include "${poll.votes.first}".`);
-        assert(response.body.includes(poll.votes[1]),
+        assert(response.body.includes(poll.votes['no']),
                 `"${response.body}" does not include "${poll.votes.last}".`);
         done();
       });
